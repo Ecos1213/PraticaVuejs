@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <div id="app">{{ text }}</div> <!-- esto es una expresion de vuejs y es la viriable text que iniciamos en vuejs aca dentro de estos corchetes podemos colocar tambien codigo javascript-->
     <script>
-        const vm = Vue.createApp({
+        const vm = Vue.createApp({ // la variable vm va a exister en el contexto del objeto window de nuestro documento en javascript esto se puede conmbinar con otras tecnologia e incluso podemos modificar nuestro text 
             data() {
                 return {
                     text: "Hola vue"
