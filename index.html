@@ -13,10 +13,10 @@
         const vm = Vue.createApp({ 
             data() {
                 return {
-                    text: "<p>Hola vue 3</p>" // si queremos que text tenga etiquetas html y nuestra directiva tambien renderize estos htmls necesitamos remplzar el atributo v-text por v-html y esto hara lo mismo que text pero con la diferencia que renderizara los htmls
+                    text: "Hola vue 3"
                 };
             },
-            template: `<div v-html="text"> </div>`
+            template: `<div v-once v-text="text"> </div>` //el atributo v-once lo que hace es cambiar la forma en que renderiza la directiva en vuejs, lo que hace es que se va a renderizar la primera vez pero solamente una vez eso quiere decir que si cambio el texto de text ya no volveria a renderizarse
         }).mount("#app");
 
         console.log(vm);
