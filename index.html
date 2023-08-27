@@ -7,29 +7,19 @@
 </head>
 <body>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <div id="app">{{ text }}</div> <!-- esto es una expresion de vuejs y es la viriable text que iniciamos en vuejs aca dentro de estos corchetes podemos colocar tambien codigo javascript-->
+    <div id="app"></div> <!-- en la segunda interpolacion de datos 2 podemos quitar el {{text}} y agregar un atributo dentro de createApp y dentro del atributo podemos colocar directivas incluso componentes de vuejs que incluso hacen lo mismo que dejando solo el {{text}}-->
     <script>
-        //La interpolación de datos hace referencia a la forma como se trabaja con variables dentro de los componentes Vue. Estas variables utilizan la sintaxis de doble corchete {{ text }}
-        const vm = Vue.createApp({ // la variable vm va a exister en el contexto del objeto window de nuestro documento en javascript esto se puede conmbinar con otras tecnologia e incluso podemos modificar nuestro text 
+        
+        const vm = Vue.createApp({ 
             data() {
                 return {
-                    text: "Hola vue"
+                    text: "Hola vue 2"
                 };
-            }
+            },
+            template: `<div> {{ text }} </div>`
         }).mount("#app");
 
         console.log(vm);
     </script>
-    <!--
-        //asi es para la version vue 3
-        <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                text: 'Hello vue!'
-            }
-        })
-    </script>
-    -->
 </body>
 </html>
