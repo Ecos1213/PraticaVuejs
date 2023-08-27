@@ -16,7 +16,7 @@
                     text: "Hola vue 3"
                 };
             },
-            template: `<div v-text="text"> </div>` //tambien podemos colocar un atributo de la directiva llamado v-text para que funcione como interpolacion de datos sin necesidad de usar {{text}} esta es la 3 forma de hacer este tipo de interpolacion
+            template: `<div v-text="text"> </div>` //el atributo v-once lo que hace es cambiar la forma en que renderiza la directiva en vuejs, lo que hace es que se va a renderizar la primera vez pero solamente una vez eso quiere decir que si cambio el texto de text ya no volveria a renderizarse
         }).mount("#app");
 
         console.log(vm);
