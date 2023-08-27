@@ -7,16 +7,16 @@
 </head>
 <body>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <div id="app"></div> <!-- en la segunda interpolacion de datos 2 podemos quitar el {{text}} y agregar un atributo dentro de createApp y dentro del atributo podemos colocar directivas incluso componentes de vuejs que incluso hacen lo mismo que dejando solo el {{text}}-->
+    <div id="app"></div> 
     <script>
         
         const vm = Vue.createApp({ 
             data() {
                 return {
-                    text: "Hola vue 2"
+                    text: "Hola vue 3"
                 };
             },
-            template: `<div> {{ text }} </div>`
+            template: `<div v-text="text"> </div>` //tambien podemos colocar un atributo de la directiva llamado v-text para que funcione como interpolacion de datos sin necesidad de usar {{text}} esta es la 3 forma de hacer este tipo de interpolacion
         }).mount("#app");
 
         console.log(vm);
