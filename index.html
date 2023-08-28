@@ -7,16 +7,23 @@
 </head>
 <body>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <div id="app"></div> 
+    <div id="app">
+        <!-- <img v-bind:src="img" v-bind:alt="img" /> en vuejs podemos tambien cambiar atributos de etiquetas html y volverlo incluso reactivo, en este ejemplo queremos que el atributo src cambie de una imagen cada vez que hagamos algo cambiaremos el src de la imagen y para esto tenemos que volver el atributo reactivo
+        esto podemos hacerlo con la directiva v-bind de vuejs, la directiva v-bind nos va a permitir modificar los valores de los atributos nativos de html o cualquier atributo que tenga el componente se puede modificar con la directiva v-bind:nombredelatributo dentro del atributo tiene que ir la variable que va a cambiar de valor
+        --> 
+    </div> 
     <script>
         
         const vm = Vue.createApp({ 
             data() {
                 return {
-                    text: "<p>Hola vue 3</p>" // si queremos que text tenga etiquetas html y nuestra directiva tambien renderize estos htmls necesitamos remplzar el atributo v-text por v-html y esto hara lo mismo que text pero con la diferencia que renderizara los htmls
+                    attr: "src", //este attr lo usamos para la directiva dinamica para decirle que el atributo va a ser src y es la forma de vuejs3
+                    img: "https://images.unsplash.com/photo-1544006659-f0b21884ce1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
                 };
-            },
-            template: `<div v-html="text"> </div>`
+            }, 
+            //template: `<img v-bind:src="img" v-bind:alt="img" />` // comentamos el codigo de la linea 11 por que no estamos usando algo nativo de html si no que es de vuejs por lo tanto tenemos que colocarlo en el atributo template para que vuejs puede interpretar las directivas, una de las caracteristicas del v-bind es que usa dos puntos para separar los atributos html con directivas de vue, esto quiere decir que las directivas realmente son como funciones que pueden recibir argumentos y el valor de atributo en este caso el argumento seria src o alt 
+            // otra cosa importante es que v-bind desde vuejs 3 tambien puede ser un argumento dinamico, esto quiere decir que tenemos en estos momentos src o alt de forma fija sin embargo yo podria hacer que simplemente sean variables por eso comentamos el codigo anterior por que usaremos la forma vuejs3
+            template: `<img v-bind:[attr]="img" />` // que quiere decir esto que attr tambien es una variable e incluso podemos decirle que attr va a ser src o va a ser alt
         }).mount("#app");
 
         console.log(vm);
