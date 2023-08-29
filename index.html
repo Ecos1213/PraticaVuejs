@@ -16,20 +16,14 @@
                     evt: "submit",
                     counter: 0
                 };
-            }, 
-            //template: `<button v-on:click="increment">{{counter}}</button>`, // los eventos de usuario son como los eventos del click el touch etc y para escuchar estos eventos vuejs tiene una directiva para esto en este ejemplo veremos onclick de vuejs, pero vuejs tiene una directiva general para escuichar eventos que es v-on:nombredelevento recuerda que el evento nativo que usamos es click y este v-on nos permite agregar un atributo que sera la funcion que nos va a permitir ejecutar un codigo cuando en este caso se de click
-            //template: `<button v-on:keyup="increment">{{counter}}</button>`, // ademas de usar v-on:click podemos usar v-on:keyup que sera que cada vez que tecleamos y soltamos la tecla este ejecutara el evento
-            //template: `<form v-on:submit.prevent.stop="submit"><button >{{counter}}</button></form>`, // otro seria usar v-on:submit que como sabemos submit lo que hace es enviarnos datos de algun formulario
-            template: `<form v-on:[evt].prevent.stop="submit"><button >{{counter}}</button></form>`, // como tip tambien funciona las variables de atributos dinamicos
-            // estas funciones no puede ser de javascript por que al final al cabo estamos usando vuejs por esa razon vuejs tiene una opcion mas o un atributo mas que nos permite crear metodos al cual podemos usar como variable en v-on, este atributo se llama methods
+            },
+            template: `<form v-on:[evt].prevent.stop="submit"><button >{{counter}}</button></form>`,
             methods: {
                 increment() {
-                    // podemos usar las variables para que sea reactivo nuestro componente y usando la palabra reservada this podemos tomar las variables que creamos para vuejs
                     this.counter ++;
                     console.log("click!");
                 },
-                submit(e) { // recuerda que submit puede llevar como argumentos datos que envia el evento 
-                    //e.preventDefault(); //este preventDefault vue tambien lo puede hacer nativamente que es colocandolo de la siguiente forma v-on:submit.prevent (al prevent se le llama modificadores y podemos encontrarlo en la documentacion de vuejs) y hara lo mismo que preventDefault(), aunque tambien podemos usar varios modificadores en este caso usaremos stop que hace lo mismo que stopPropagation (Este método se usa para detener la propagación de un evento a través de la jerarquía de elementos del DOM)
+                submit(e) {
                     this.counter ++;
                     console.log(e);
                 }
