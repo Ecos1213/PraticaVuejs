@@ -13,44 +13,9 @@
         const vm = Vue.createApp({ 
             data() {
                 return {
-                    text: "Hola Vue"
                 };
             },
-            /*template: `
-                <p>{{text}}</p>
-                <input type="text" v-on:change="input" />
-            `,  // v-on:change hace lo mismo que change de javascript que lo que hace es que cuando cambie el texto del input y le de click a alguna parte de la pagina ejecute el metodo input
-            methods: {
-                input(e) {
-                    this.text = e.target.value; // si queremos que nuestro componente sea reactivo y cambie el texto simplemente en este caso usando el metodo v-on:change cuando cambie cambiamos el valor de la variable y lo que hara vue es volver reactivo el input y si igualamos el valor a la variable que declaramos en vue cambiara nuestro texto cuando cambemos el input
-                }
-            }*/
-            /*template: `
-                <p>{{text}}</p>
-                <input type="text" v-on:input="input" v-bind:value="text" />
-            `, // hay un problema con el onchange es que siempre tenemos que darle click afuera y no sucede en tiempo real pero podriamos usar un keyup o keydown para esto pero vue nos facilita las cosas en vue existe el metodo input que ejecuta el metodo en tiempo real asi cambiamos el valor en tiempo real
-            */
-           /*template: `
-                <p>{{text}}</p>
-                <input type="text"
-                @input="input"
-                :value="text" /> 
-            `, // como puede ser a veces engorroso entonces vue creo alias tanto para v-on como para v-bind para v-on solo dejariamos el @ y para v-bind usariamos los : esto quiere decir que si usamos el @ estariamos usando un v-on y si usamos los : estariamos usando un v-bind 
-
-            //recuerda que esto significa lo siguiente :
-            //Atributos -> :
-            //Eventos -> @
-
-            methods: {
-                input(e) {
-                    this.text = e.target.value; 
-                }
-            }*/
-            template: `
-                <p>{{text}}</p>
-                <input type="text"
-                v-model="text" /> 
-            `,// pero tambien existe una drectiva que nos permite de una vez comunicarnos con la vista al modelo y el modelo con la vista (quiere decir que de una enviara los datos para mostrarlo en la pagina cuando modficio el input) esta directiva se llama v-model gracias a esto nuestra variable quedara reactiva y tendra comunicacion de doble sentido, hace lo mismo que lo anterior solo que nos facilita la vida por que es mas corto
+            template: ``,
         }).mount("#app");
 
         console.log(vm);
