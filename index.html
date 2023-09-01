@@ -13,12 +13,9 @@
         const vm = Vue.createApp({ 
             data() {
                 return {
-                    text: "Puerta cerrada", 
+                    text: "Accede a tu cuenta", 
                     open: false,
-                    /*styles: {
-                        backgroundColor: "#e5e5e5", // asi como react los estilos dinamicos tienen que estar unidos y la segunda palabra separada en adelante tiene que ir la primera en mayuscula
-                    }//la variable puede llamarse de cualquier manera pero la condicion para los estilos css usarlos dinamicamente siempre tiene que ser en json
-                    */
+                    username: ""
                 };
             },
             methods: {
@@ -38,30 +35,29 @@
             watch: {
                 open(value) { 
                     if(value) {
-                        this.text = "Puerta abierta";
-                        //this.styles.backgroundColor = "#b5e7a0" // si queremos ahora cambiar dinamicamente el estilo simplemente tenemos que llamar la varialbe json y cambiar el valor del atributo y asi cambiaria su estilo en este caso cambiamos el estilo dinamicamente
+                        this.text = "Sesion abierta";
                     }else {
-                        this.text = "Puerta cerrada";
-                        //this.styles.backgroundColor = "#eca1a6"
+                        this.text = "Sesion cerrada";
+                        this.username = "";
                     }
                 }
             },
-            /*template: `
-            <div class="container" :style="styles">
-                <h2>{{text}}</h2>
-                <button @click="puertaAbierta">{{label}}</button>
-            </div>
-            `, // si queremos que los estilos sean reactivos o dinamicos tenemos que usar v-bind en el atributo styles y colcoar la variable json que creamos 
-            */
             template: `
             <div class="container" :class="styles">
                 <h2>{{text}}</h2>
-                <button @click="puertaAbierta">{{label}}</button>
+                <div v-if="open">
+                    <p>Hola, {{username}}</p>
+                </div>
+                <div v-else>
+                    <label>Username</label>
+                    <input type="text" v-model="username"/>
+                </div>
+                <button @click="puertaAbierta">
+                    <div v-if="!open">Acceder</div>
+                    <div v-else>Salir</div>                    
+                </button>
             </div>
-            `, // aunque tambien hay otra manera de cambiar los estilos de en vez de volver dinamicamente el atributo style lo que haremos es cambiar dinamicamente el atributo class y cuando presionen el boton cambiaremos la clase 
-            // una cosa interesante de vuejs es que las clases al volverlas reactivas tenemos que colocar el valor en forma de json o de lista osea de esta manera: :class="['open']"
-            // ya hay varias maneras de cambiar los estilos dinamicamente entre estas podemos hacer una variable computada y dejarlo directamente en la clase o incluso podemos hacer lo siguiente {'open': open, 'closed': !open} esto lo que hace dentro de el atributo class es que dinamicamente al ver si la variable es true colocara la clase 'open' de css y si la varaible open es false colocara la clase 'closed' de css
-            // la forma que dejaremos es la version computada que esta mas arriba
+            `, // a veces podemos ahorrarnos los metodos computados y podemos usar condicionales existe una directiva en vuejs llamada v-if y v-else funciona igual que un if de hecho en el v-if hay que colocar un booleano en este caso colocarameos la variable open y el v-else no hay que colocar y lo que hace v-if es al ser true mostrara el button si no mostrara el else
         }).mount("#app");
 
         console.log(vm);
