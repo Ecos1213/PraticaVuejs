@@ -13,9 +13,28 @@
         const vm = Vue.createApp({ 
             data() {
                 return {
+                    firstName: "Diana",
+                    lastName: "Martinez",
+                    now: new Date()
                 };
             },
-            template: ``,
+           
+            /*template: `
+                <div>{{firstName}} {{lastName}} </div>
+                <div>{{now.toLocaleDateString()}}</div>
+            `,*/ // podemos usar javascript dentro de la interpolacion de datos pero ahora lo que queremos es unir nuestra nombre y apellido y dejarlo en una sola variable y de aqui sale el metodo computado o propiedad computada, que es un metodo que no necesita ser llamada para que escuche los cambios (quiere decir que a diferencia de los metodos que hay que retornar un valor los metodos computados funcionan como una variable por eso fullName se ve como una variable)
+            computed: {
+                fullName() {
+                    return this.firstName + " " + this.lastName;
+                }, // como vemos la propiedad computada se hace con el atributo computed de vuejs y solo tenemos que colocar el nombre del metodo como una variable en la interpolacion de datos y ya nos arrojaria el valor, otra diferencia del metodo computado a un metodo es que de una vez se vuelve reactivo esto quiere decir que si cambiamos en este caso firstname nos va a coger de una el cambio y no los va a mostrar
+                today() {
+                    return this.now.toLocaleDateString();
+                }
+            },
+            template: `
+                <div>{{fullName}} </div>
+                <div>{{today}}</div>
+            `,
         }).mount("#app");
 
         console.log(vm);
