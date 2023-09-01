@@ -7,31 +7,44 @@
 </head>
 <body>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <div id="app"></div>
-
+    <div id="app"></div> 
     <script>
-        const vm = Vue.createApp({
+        
+        const vm = Vue.createApp({ 
+            // ejercicio de puerta abierta y cerrada
             data() {
                 return {
-                    counter: 0
+                    text: "Puerta cerrada", 
+                    open: false
                 };
             },
-            template: `<div>{{counter}}<button v-on:click="increment">+</button> <button v-on:click="decrement">-</button> </div>`,
             methods: {
-                increment() {
-                    if(this.counter >= 0){
-                        this.counter++;
-                    }
-                    
-                },
-                decrement() {
-                    if(this.counter > 0){
-                        this.counter--;
-                    }
-                    
+                puertaAbierta() {
+                    console.log(this.open);
+                    this.open = !this.open;
                 }
-            }
-        }).mount("#app") 
+            },
+            computed: {
+                label() {
+                    return this.open ? "Cerrar" : "Abrir";
+                }
+            },
+            watch: {
+                open(value) { 
+                    if(value) {
+                        this.text = "Puerta abierta";
+                    }else {
+                        this.text = "Puerta cerrada";
+                    }
+                }
+            },
+            template: `
+                <div>{{text}}</div>
+                <button @click="puertaAbierta">{{label}}</button>
+            `,
+        }).mount("#app");
+
+        console.log(vm);
     </script>
 </body>
 </html>
