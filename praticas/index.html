@@ -15,6 +15,7 @@
                 return {
                     text: "Accede a tu cuenta", 
                     open: false,
+                    isAdd: false,
                     username: "",
                     posts: [{
                         title: "Titulo 1",
@@ -34,13 +35,44 @@
                     },{
                         title: "Titulo 6",
                         description: "Lorem ipsum..."
-                    }]
+                    }] // lo que podemos hacer en vuejs cuando tenemos una lista y necesitamos recorrera es usar una directiva llamada v-for hace lo mismo que un for en javascript, las listas en vuejs son dinamicas o reactivas si cambian su valor tambienh nos mostara este valor cambiado
                 };
             },
             methods: {
                 puertaAbierta() {
                     console.log(this.open);
                     this.open = !this.open;
+                },
+                removeItem(index) {
+                    this.posts.splice(index, 1);
+                },
+                changeIsAdd() {
+                    this.isAdd = !this.isAdd;
+                },
+                agregarItem(e) {
+                    if(!this.validationForm(e)) {
+                        const indiceFinal = this.posts.length;
+                        this.posts.splice(indiceFinal,0, {
+                            title: e.target.title.value,
+                            description: e.target.description.value
+                        });
+                        e.target.title.value = "";
+                        e.target.description.value = "";
+                    }else {
+                        console.log("Error debe ingresar algun valor");
+                    }
+                    
+                },
+                validationForm(e) {
+                    if (e.target.title.value === "" ){
+                        return true
+                    }
+
+                    if (e.target.description.value === "") {
+                        return true
+                    }
+
+                    return false;
                 }
             },
             computed: {
@@ -64,16 +96,26 @@
             template: `
             <div class="container" :class="styles">
                 <h2>{{text}}</h2>
-                <div v-if="open">
+                <div class="listContainer" v-if="open">
                     <p>Hola, {{username}}</p>
                     <div class="list">
-                        <div v-for="(item, index) in posts" :key="index" class="item">
-                            <!--como vemos podemos usar la directiva v-for y agregarle como valor nuestra lista que va a recorrese y lo agregara en la variable item y ahi podemos usar los atributos del json del item pero ademas asi como react cada elemento tiene que tener una llave un token para que vuejs lo identifique y ademas del valor que nos proporciona for tambien nos proporciona un index y podemos escribirlo de asi item a asi (item, index) 
-                                y ya podemos usar el atributo key 
-                            -->
+                        <div v-if="!isAdd" v-for="(item, index) in posts" :key="index" class="item">
                             <div class="title">{{item.title}}</div>
                             <p>{{item.description}}</p>
-                        </div>    
+                            <button @click="removeItem(index)">Eliminar</button>
+                        </div>
+                        
+                        <div v-else>
+                            <form @submit.prevent="agregarItem">
+                                <input type="text" name="title" placeholder="Example title" />
+                                <input type="text" name="description" placeholder="Lorem ipsum....." />
+                                <button @click="changeIsAdd" type="button">Regresar</button>
+                                <button type="submit" >Aceptar</button>
+                            </form>
+                            
+                            
+                        </div> 
+                        <button v-if="!isAdd" @click="changeIsAdd" type="button">Agregar</button>    
                     </div>
                 </div>
                 <div v-else>
@@ -102,7 +144,9 @@
             align-items: center;
             flex-direction: column;
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
+            position: relative;
+
         }
         button {
             margin-top: 24px;
@@ -113,9 +157,11 @@
         }
         .closed {
             background-color: #eca1a6;
+            
         }
         .open {
             background-color: #b5e7a0;
+            
         }
         .list {
             display: flex;
@@ -127,6 +173,9 @@
         .title {
             font-weight: bold;
             font-size: 1.2rem;
+        }
+        .listContainer {
+            width: 15%;
         }
     </style>
 </body>
