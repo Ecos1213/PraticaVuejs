@@ -9,8 +9,8 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <div id="app"></div> 
     <script>
-        
-        const vm = Vue.createApp({ 
+        //para crear un componente primero tenemos que separar el createApp del mount ya que mount retorna el modelo vista que es vue js mientras que el metodo createApp es nuestra aplicacion en si misma hecha en vuejs y lo que queremos es que podamos acceder a la aplicacion para poder crearle un componente interno
+        const app = Vue.createApp({ 
             data() {
                 return {
                     text: "Accede a tu cuenta", 
@@ -34,7 +34,7 @@
                     },{
                         title: "Titulo 6",
                         description: "Lorem ipsum..."
-                    }] // lo que podemos hacer en vuejs cuando tenemos una lista y necesitamos recorrera es usar una directiva llamada v-for hace lo mismo que un for en javascript, las listas en vuejs son dinamicas o reactivas si cambian su valor tambienh nos mostara este valor cambiado
+                    }] 
                 };
             },
             methods: {
@@ -67,13 +67,17 @@
                 <div v-if="open">
                     <p>Hola, {{username}}</p>
                     <div class="list">
-                        <div v-for="(item, index) in posts" :key="index" class="item">
-                            <!--como vemos podemos usar la directiva v-for y agregarle como valor nuestra lista que va a recorrese y lo agregara en la variable item y ahi podemos usar los atributos del json del item pero ademas asi como react cada elemento tiene que tener una llave un token para que vuejs lo identifique y ademas del valor que nos proporciona for tambien nos proporciona un index y podemos escribirlo de asi item a asi (item, index) 
-                                y ya podemos usar el atributo key 
+                        <!--como vemos asi como en react podemos usar el componente directamente como lo llamamos que es item y en este componente tenemos que usar el vfor para que recorra cada componente item
+                            eso si ten en cuenta que tambien e colocamos el key y no le colocamos la clase por que ese si va dentro de nuestro componente
+                            
+                            ahora como vemos necesitamos el valor item de v-for y como react esto lo podemos hacer con una propiedad del componente usando el v-bind o con el shortcode de : y despues le podemos coocar cualquier nombre a nuestra propiedad pero recuerda que asi como se llame se tiene que usar en nuestro componente
                             -->
-                            <div class="title">{{item.title}}</div>
-                            <p>{{item.description}}</p>
-                        </div>    
+                        <item 
+                            v-for="(item, index) in posts" 
+                            :key="index"
+                            :post="item"
+                        />
+                           
                     </div>
                 </div>
                 <div v-else>
@@ -86,7 +90,19 @@
                 </button>
             </div>
             `,
-        }).mount("#app");
+        });
+        // ahora si con la variable app podemos crear un componente con el metodo del objeto de nuestra aplicacion de vuejs llamado component, este metodo lleva como primer parametro el nombre del componente y el segundo la descripcion de un objeto json de lo que hace este componente que son las diferentes opciones de vuejs
+        app.component("item", {
+            //para usar una propiedad que vienen a nuestro componente de vue tenemos que usar nuestro atributo props de vuejs, este puede ser una lista [] y aca le colocamos las props que creamos anteriormente como atributo, ahora cambiamos item por post ya que ahora asi se llama la propiedad que contiene nuestros posts
+            props:['post'],
+            template: `
+            <div class="item">
+                <div class="title">{{post.title}}</div>
+                <p>{{post.description}}</p>
+            </div>
+            `
+        });
+        const vm = app.mount("#app");
 
         console.log(vm);
     </script>
