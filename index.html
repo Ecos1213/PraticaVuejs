@@ -9,141 +9,38 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <div id="app"></div> 
     <script>
-        //para crear un componente primero tenemos que separar el createApp del mount ya que mount retorna el modelo vista que es vue js mientras que el metodo createApp es nuestra aplicacion en si misma hecha en vuejs y lo que queremos es que podamos acceder a la aplicacion para poder crearle un componente interno
         const app = Vue.createApp({ 
-            data() {
-                return {
-                    text: "Accede a tu cuenta", 
-                    open: false,
-                    username: "",
-                    posts: [{
-                        title: "Titulo 1",
-                        description: "Lorem ipsum..."
-                    },{
-                        title: "Titulo 2",
-                        description: "Lorem ipsum..."
-                    },{
-                        title: "Titulo 3",
-                        description: "Lorem ipsum..."
-                    },{
-                        title: "Titulo 4",
-                        description: "Lorem ipsum..."
-                    },{
-                        title: "Titulo 5",
-                        description: "Lorem ipsum..."
-                    },{
-                        title: "Titulo 6",
-                        description: "Lorem ipsum..."
-                    }] 
-                };
-            },
-            methods: {
-                puertaAbierta() {
-                    console.log(this.open);
-                    this.open = !this.open;
-                }
-            },
-            computed: {
-                label() {
-                    return this.open ? "Cerrar" : "Abrir";
-                }, 
-                styles() {
-                    return this.open ? ['open'] : ['closed'];
-                }
-            },
-            watch: {
-                open(value) { 
-                    if(value) {
-                        this.text = "Sesion abierta";
-                    }else {
-                        this.text = "Sesion cerrada";
-                        this.username = "";
-                    }
-                }
-            },
+            // los slots es lo mismo que los layout en react y nos permite aprovechar esa sintaxis html para poder crear nuestro propios componentes
             template: `
-            <div class="container" :class="styles">
-                <h2>{{text}}</h2>
-                <div v-if="open">
-                    <p>Hola, {{username}}</p>
-                    <div class="list">
-                        <!--como vemos asi como en react podemos usar el componente directamente como lo llamamos que es item y en este componente tenemos que usar el vfor para que recorra cada componente item
-                            eso si ten en cuenta que tambien e colocamos el key y no le colocamos la clase por que ese si va dentro de nuestro componente
-                            
-                            ahora como vemos necesitamos el valor item de v-for y como react esto lo podemos hacer con una propiedad del componente usando el v-bind o con el shortcode de : y despues le podemos coocar cualquier nombre a nuestra propiedad pero recuerda que asi como se llame se tiene que usar en nuestro componente
-                            -->
-                        <item 
-                            v-for="(item, index) in posts" 
-                            :key="index"
-                            :post="item"
-                        />
-                           
-                    </div>
+                <div>
+                    <v-layout>
+                        <template v-slot:header>
+                            <button>Titulo</button>
+                        </template>
+                        <template v-slot:content>
+                            Lorem ispum dolor sit amet
+                        </template>
+                    </v-layout>
+                    
                 </div>
-                <div v-else>
-                    <div>Username</div>
-                    <input type="text" v-model="username"/>
-                </div>
-                <button @click="puertaAbierta">
-                    <div v-if="!open">Acceder</div>
-                    <div v-else>Salir</div>                    
-                </button>
-            </div>
             `,
         });
-        // ahora si con la variable app podemos crear un componente con el metodo del objeto de nuestra aplicacion de vuejs llamado component, este metodo lleva como primer parametro el nombre del componente y el segundo la descripcion de un objeto json de lo que hace este componente que son las diferentes opciones de vuejs
-        app.component("item", {
-            //para usar una propiedad que vienen a nuestro componente de vue tenemos que usar nuestro atributo props de vuejs, este puede ser una lista [] y aca le colocamos las props que creamos anteriormente como atributo, ahora cambiamos item por post ya que ahora asi se llama la propiedad que contiene nuestros posts
-            props:['post'],
-            template: `
-            <div class="item">
-                <div class="title">{{post.title}}</div>
-                <p>{{post.description}}</p>
-            </div>
-            `
-        });
+
+        //por nomenclatura es conveniente usar v-nombredelcomponete
+        app.component("v-layout", {
+            //para hacer el layout como react vuejs tiene un tag llamado slot que nos permite trae todo el contenido interno que tenga el componente es como children de react, aunque hay una diferencia es que podemos colocar varias veces la etiqueta slot pero para que entienda cual de los dos tiene que ir segun el contenido tenemos que nombrar los slot para que al utilizarlo podamos distiguir cual contenido va a ir en cierto slot e4sto nos ayuda mucho por que nos permite agregar en un mismo layout dividir nuestrass secciones de donde queremos nuestro contenido (redcuerda que para que funcione esto todo tiene que ir dentro del layout)
+            // recuerda dos cosas la primera es que slot tiene un atributo llamado name para poder nombre el slot y asi distinguirlo a la hora de usarlo y para usarlo vuejs nos probee de un tag llamado template y dentro de template podemos colocar una directiva de vuejs llamado v-slot:nombredelslot
+            template: `<header>
+                    <slot name="header"></slot>
+                </header>
+                <div>
+                    <slot name="content"></slot>
+                </div>`
+        }); 
+        
         const vm = app.mount("#app");
 
         console.log(vm);
     </script>
-    <style>
-        html, body {
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        #app, .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-        }
-        button {
-            margin-top: 24px;
-            border: none;
-            background-color: white;
-            padding: 8px 24px;
-            border-radius: 12px;
-        }
-        .closed {
-            background-color: #eca1a6;
-        }
-        .open {
-            background-color: #b5e7a0;
-        }
-        .list {
-            display: flex;
-            flex-direction: column;
-        }
-        .item {
-            border: 1px solid black;
-        }
-        .title {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-    </style>
 </body>
 </html>
