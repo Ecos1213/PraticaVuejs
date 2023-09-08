@@ -10,34 +10,32 @@
     <div id="app"></div> 
     <script>
         const app = Vue.createApp({ 
-            // los slots es lo mismo que los layout en react y nos permite aprovechar esa sintaxis html para poder crear nuestro propios componentes
+            data() {
+                return {
+                    items: ["uno", "dos", "tres",,] // para que el text default funcione hay que dejar dos comas 
+                }
+            },
             template: `
-                <div>
-                    <v-layout>
-                        <template v-slot:header>
-                            <button>Titulo</button>
-                        </template>
-                        <template v-slot:content>
-                            Lorem ispum dolor sit amet
-                        </template>
-                    </v-layout>
-                    
-                </div>
-            `,
+                <ul>
+                    <v-item v-for="item in items" v-bind:text="item"></v-item>  
+                </ul>
+            `
         });
+        //recuerda que cuando usaos un atributo custom y queremos pasarlo a un componente hijo siempre tenemos que decirle que existen esos datos y la manera de hacerlo es usando el atributo props con un array con los atributos creados
+        app.component("v-item", {
+            //props: ["text"],
+            //una cosa a tener en cuenta es que es mejor declarar los props como json y no como una lista ya que tambien puede ser una mala pratica
+            props: {
+                //text: String //aca declaramos text y le decimos que tiene que ser string y vuejs nos permite hacer esto
+                text: {
+                    default: "Texto vacio" // una cosa a tener en cuenta es que ademas de que podemos declarar nuestro valor texto tambien podemos colocarle un valor por defecto con el atributo default pero tenemos que volver la variable como un json y ademas de eso agregar el atributo default y este aparecera como otro dato a lfinal del loop
+                }
+            },
+            template: `
+                <li> {{text}}</li>      
+                `
+        })
 
-        //por nomenclatura es conveniente usar v-nombredelcomponete
-        app.component("v-layout", {
-            //para hacer el layout como react vuejs tiene un tag llamado slot que nos permite trae todo el contenido interno que tenga el componente es como children de react, aunque hay una diferencia es que podemos colocar varias veces la etiqueta slot pero para que entienda cual de los dos tiene que ir segun el contenido tenemos que nombrar los slot para que al utilizarlo podamos distiguir cual contenido va a ir en cierto slot e4sto nos ayuda mucho por que nos permite agregar en un mismo layout dividir nuestrass secciones de donde queremos nuestro contenido (redcuerda que para que funcione esto todo tiene que ir dentro del layout)
-            // recuerda dos cosas la primera es que slot tiene un atributo llamado name para poder nombre el slot y asi distinguirlo a la hora de usarlo y para usarlo vuejs nos probee de un tag llamado template y dentro de template podemos colocar una directiva de vuejs llamado v-slot:nombredelslot
-            template: `<header>
-                    <slot name="header"></slot>
-                </header>
-                <div>
-                    <slot name="content"></slot>
-                </div>`
-        }); 
-        
         const vm = app.mount("#app");
 
         console.log(vm);
