@@ -12,27 +12,40 @@
         const app = Vue.createApp({ 
             data() {
                 return {
-                    items: ["uno", "dos", "tres",,] // para que el text default funcione hay que dejar dos comas 
+                    items: ["uno", "dos", "tres"]
+                }
+            },
+            methods: {
+                remove(i) {
+                    this.items = this.items.filter((el, index) => index !== i );
                 }
             },
             template: `
                 <ul>
-                    <v-item v-for="item in items" v-bind:text="item"></v-item>  
+                    <v-item 
+                        v-for="(item, i) in items" 
+                        v-bind:text="item"
+                        v-on:remove="remove(i)"
+                    />  
                 </ul>
             `
         });
-        //recuerda que cuando usaos un atributo custom y queremos pasarlo a un componente hijo siempre tenemos que decirle que existen esos datos y la manera de hacerlo es usando el atributo props con un array con los atributos creados
+        
+        // si queremos modificar una variable que venga del padre ya sea un json o un array o lo que sea tenemos que modificarlo desde el padre por que si lo modificamos desde el hijo tendriamos problema con la reactividad ya que el padre no se enteraria de este cambio y esto puede ser un problema asi que una manera de hacerlo es por medio de un evento para que lo modifique desde el padre y no del hijo
+        // para poder comunicarnos desde hijo y padre tenemos que primero crear en este caso un metodo que va a remover cada vez que se le haga click en el padre y tenemos que utilizar un v-on custom que simplemente es colocar un v-on con un nombre del evento que colocar (v-on:nombredelmetodo) para despues en el hijo creamos un metodo que lo que va a hacer es emitir el evento custom que nombramos
         app.component("v-item", {
-            //props: ["text"],
-            //una cosa a tener en cuenta es que es mejor declarar los props como json y no como una lista ya que tambien puede ser una mala pratica
             props: {
-                //text: String //aca declaramos text y le decimos que tiene que ser string y vuejs nos permite hacer esto
-                text: {
-                    default: "Texto vacio" // una cosa a tener en cuenta es que ademas de que podemos declarar nuestro valor texto tambien podemos colocarle un valor por defecto con el atributo default pero tenemos que volver la variable como un json y ademas de eso agregar el atributo default y este aparecera como otro dato a lfinal del loop
+                text: String
+            },
+            methods: {
+                //este metodo se ejecutara cuando le den click y ejecutara el emit del evento que viene del padre
+                rm() {
+                    // para emitir el evento custom que creamos podemos usar this.$emit que lo que hace es emitir o lanzar el metodo en este caso como le colocamos remove al evento custom entonces como primer parametro tiene que ir el nombre del evento osea remove y puede tener un segundo parametro que es que lo que hace es emitir un valor a este evento que queremos usar
+                    this.$emit("remove");
                 }
             },
             template: `
-                <li> {{text}}</li>      
+                <li v-on:click="rm"> {{text}}</li>      
                 `
         })
 
