@@ -40,7 +40,7 @@
             methods: {
                 //este metodo se ejecutara cuando le den click y ejecutara el emit del evento que viene del padre
                 rm() {
-                    // para emitir el evento custom que creamos podemos usar this.$emit que lo que hace es emitir o lanzar el metodo en este caso como le colocamos remove al evento custom entonces como primer parametro tiene que ir el nombre del evento osea remove y puede tener un segundo parametro que es que lo que hace es emitir un valor a este evento que queremos usar
+                    // para emitir el evento de la propiedad que viene del prop custom que creamos podemos usar this.$emit que lo que hace es emitir o lanzar el metodo que esta dentro de la propiedad custom en este caso como le colocamos a la propiedad remove del evento custom entonces como primer parametro tiene que ir el nombre de la propiedad osea remove (ya que lo que hace es ejecutar lo que esta dentro de la propiedad que es el evento entonces por eso tiene que ir el nombre de la propiedad custom) y puede tener un segundo parametro que es que lo que hace es emitir un valor a este evento que queremos usar
                     this.$emit("remove");
                 }
             },
