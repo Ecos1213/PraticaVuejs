@@ -12,46 +12,47 @@
         const app = Vue.createApp({ 
             data() {
                 return {
-                    items: ["uno", "dos", "tres"]
+                    text: "hola vue"
                 }
             },
-            methods: {
-                remove(i) {
-                    this.items = this.items.filter((el, index) => index !== i );
+            /*methods: {
+                input(e) {
+                    console.log(e);
+                    this.text = e; //esta e es el valor como tal que viene del emit
                 }
-            },
+            },*/
+            /*template: `
+                <div>
+                    <p>{{text}}</p>
+                    <v-input :value="text" v-on:update="input" />
+                </div>
+            `*/
             template: `
-                <ul>
-                    <v-item 
-                        v-for="(item, i) in items" 
-                        v-bind:text="item"
-                        v-on:remove="remove(i)"
-                    />  
-                </ul>
+                <div>
+                    <p>{{text}}</p>
+                    <v-input v-model:value="text" />
+                </div>
             `
         });
-        
-        // si queremos modificar una variable que venga del padre ya sea un json o un array o lo que sea tenemos que modificarlo desde el padre por que si lo modificamos desde el hijo tendriamos problema con la reactividad ya que el padre no se enteraria de este cambio y esto puede ser un problema asi que una manera de hacerlo es por medio de un evento para que lo modifique desde el padre y no del hijo
-        // para poder comunicarnos desde hijo y padre tenemos que primero crear en este caso un metodo que va a remover cada vez que se le haga click en el padre y tenemos que utilizar un v-on custom que simplemente es colocar un v-on con un nombre del evento que colocar (v-on:nombredelmetodo) para despues en el hijo creamos un metodo que lo que va a hacer es emitir el evento custom que nombramos
-        app.component("v-item", {
+
+        // estamos pasando un prop de padre pero cada vez que modificabamos el input no cambiaba el dato del padre asi que una opcion es usar un v-on que modifique el valor del padre y asi ver el cambio por eso usamos v-on:input (lo que hace input de vuejs es detectar cada vez que cambiamos el contenido de un input)
+        app.component("v-input", {
             props: {
-                text: String
+                value: String
             },
             methods: {
-                //este metodo se ejecutara cuando le den click y ejecutara el emit del evento que viene del padre
-                rm() {
-                    // para emitir el evento custom que creamos podemos usar this.$emit que lo que hace es emitir o lanzar el metodo en este caso como le colocamos remove al evento custom entonces como primer parametro tiene que ir el nombre del evento osea remove y puede tener un segundo parametro que es que lo que hace es emitir un valor a este evento que queremos usar
-                    this.$emit("remove");
+                input(e) {
+                    console.log(e.target.value);
+                    //this.$emit("update", e.target.value);
+                    this.$emit("update:value", e.target.value); // en este caso update si es una palabra obligatoria ya que es una convecion misma de vuejs diciendole que este valor se va a actualizar mientras que el comentario anterior update es una prop del componente que colocamos nosotros para que ejecute lo que hay dentro de esa prop
                 }
             },
-            template: `
-                <li v-on:click="rm"> {{text}}</li>      
-                `
-        })
+            // vuejs siempre busca mas simplicidad por esa razon podemos usar un v-model custom para que haga lo mismo que estuvimos haciendo que es envian de un padre a un hijo un evento con su propiedad y del hijo al padre la comunicacion de la modificacion de la propiedad por eso comentamos el siguiente codigo para mostrar el ejemplo de v-model custom
+            // para esto en el padre tenemos que modificar las propiedades del componente v-input quitando tanto el v-on y el v-bind y colocar v-model:nombre-propiedad-que-recibe-el-hijo y como valor tiene que ir la variable del padre en este caso seria text y quitar el evento input en el padre ademas que en el emit en el primer parametro del nombre de la propiedad tenemos que colocar update:nombre-propiedad-que-recibe-el-hijo
+            template: `<input type="text" :value="value" v-on:input="input" />`
+        });
 
         const vm = app.mount("#app");
-
-        console.log(vm);
     </script>
 </body>
 </html>
